@@ -7,16 +7,6 @@ import '../widgets/list.dart';
 //It'll allow the user to add new lists too (later features).
 
 class Homepage extends StatelessWidget {
-  Future<void> _createDialog(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AddNewTask();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +16,7 @@ class Homepage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              return _createDialog(context);
+              return AddNewTask.addNewTaskSheet(context);
             },
           ),
         ],
@@ -35,9 +25,9 @@ class Homepage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          return _createDialog(context);
+          return AddNewTask.addNewTaskSheet(context);
         },
-        tooltip: 'Add a new task!',
+        tooltip: 'Add a new item!',
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/task.dart';
 
@@ -18,17 +19,43 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItemState extends State<ListItem> {
+  Widget _buildText(bool check, String text) {
+    if(check){
+      return Text(text, style: TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough),);
+    } 
+    return Text(text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Checkbox(
-        value: false,
-        onChanged: null,
-      ),
-      title: Text(widget.task.description),
-      trailing: IconButton(
-        icon: Icon(Icons.edit),
-        onPressed: null,
+    return Container(
+      height: 65,
+      child: Card(
+        elevation: 10,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: widget.task.isDone,
+                  onChanged: (_) {
+                    setState(() {
+                      Provider.of<TaskProvider>(context, listen: false)
+                          .changeStatus(widget.task.id);
+                          //print('SET STATE ${widget.task.isDone.toString()}');
+                    });
+                  },
+                ),
+                _buildText(widget.task.isDone, widget.task.description),
+              ],
+            ),
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: null,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -25,12 +25,12 @@ class TaskProvider with ChangeNotifier {
 
   final List<Task> _toDoList = [
     Task(
-      id: "task#1",
+      id: 'task#1',
       description: 'Create my models',
       dueTime: DateTime.now().toString(),
     ),
     Task(
-      id: "task#2",
+      id: 'task#2',
       description: 'Add provider',
       dueTime: DateTime.now().toString(),
     ),
@@ -39,5 +39,16 @@ class TaskProvider with ChangeNotifier {
   void createNewTask(Task task) {
     _toDoList.add(task);
     notifyListeners();
+  }
+
+  void editTask(Task task) {
+    _toDoList.add(task);
+    notifyListeners();
+  }
+
+  void changeStatus(String id) {
+    int index = _toDoList.indexWhere((task) => task.id == id);
+    _toDoList[index].isDone = !_toDoList[index].isDone;
+    //print('PROVIDER ${_toDoList[index].isDone.toString()}');
   }
 }
