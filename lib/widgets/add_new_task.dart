@@ -7,6 +7,10 @@ import '../providers/task.dart';
 
 class AddNewTask extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  Task newTask = Task(
+    id: DateTime.now().toString(),
+    description: '',
+  );
 
   static void addNewTaskSheet(BuildContext context) {
     showModalBottomSheet(
@@ -19,9 +23,11 @@ class AddNewTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(20),
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text('Title'),
             TextFormField(
@@ -34,6 +40,12 @@ class AddNewTask extends StatelessWidget {
                 }
                 return null;
               },
+              onSaved: (value) {
+                newTask.description = value;
+              },
+            ),
+            SizedBox(
+              height: 20,
             ),
             Text('Due time'),
             TextFormField(
@@ -42,6 +54,15 @@ class AddNewTask extends StatelessWidget {
               ), //Update as user pick the time
             ),
             //Show time picker
+            FlatButton(
+              child: Text('Add task'),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  //Provider.of<TaskProvider>(context, listen: false).createNewTask(newTask);
+                }
+              },
+            ),
           ],
         ),
       ),

@@ -20,10 +20,16 @@ class ListItem extends StatefulWidget {
 
 class _ListItemState extends State<ListItem> {
   Widget _buildText(bool check, String text) {
-    if(check){
-      return Text(text, style: TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough),);
-    } 
-    return Text(text);
+    if (check) {
+      return Text(
+        text,
+        style: TextStyle(
+            fontSize: 22,
+            color: Colors.grey,
+            decoration: TextDecoration.lineThrough),
+      );
+    }
+    return Text(text, style: TextStyle(fontSize: 22));
   }
 
   @override
@@ -43,7 +49,7 @@ class _ListItemState extends State<ListItem> {
                     setState(() {
                       Provider.of<TaskProvider>(context, listen: false)
                           .changeStatus(widget.task.id);
-                          //print('SET STATE ${widget.task.isDone.toString()}');
+                      //print('SET STATE ${widget.task.isDone.toString()}');
                     });
                   },
                 ),
