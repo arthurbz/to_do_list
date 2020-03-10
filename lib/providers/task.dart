@@ -46,6 +46,11 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeTask(String id) {
+    _toDoList.removeWhere((task) => task.id == id);
+    notifyListeners();
+  }
+
   void changeStatus(String id) {
     int index = _toDoList.indexWhere((task) => task.id == id);
     _toDoList[index].isDone = !_toDoList[index].isDone;
