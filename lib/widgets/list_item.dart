@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/task.dart';
+import './item_text.dart';
 
 //A widget that composes every single item in the list.
 //Allows the user to check it as done.
@@ -19,22 +20,6 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItemState extends State<ListItem> {
-  Widget _buildText(bool check, String text) {
-    if (check) {
-      return Text(
-        text,
-        style: TextStyle(
-            fontSize: 22,
-            color: Colors.grey,
-            decoration: TextDecoration.lineThrough),
-      );
-    }
-    return Text(text,
-        style: TextStyle(
-          fontSize: 22,
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     void _checkItem() {
@@ -52,7 +37,29 @@ class _ListItemState extends State<ListItem> {
         Provider.of<TaskProvider>(context, listen: false)
             .removeTask(widget.task.id);
       },
-      //Work on a background when dismissed.
+      background: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'DELETE',
+              style: TextStyle(
+                color: Theme.of(context).errorColor,
+                fontFamily: 'Lato',
+                fontSize: 16,
+              ),
+            ),
+            SizedBox(width: 5),
+            Icon(
+              Icons.delete,
+              color: Theme.of(context).errorColor,
+              size: 28,
+            ),
+          ],
+        ),
+      ),
       child: GestureDetector(
         onTap: _checkItem,
         child: Container(
@@ -68,7 +75,12 @@ class _ListItemState extends State<ListItem> {
                       value: widget.task.isDone,
                       onChanged: (_) => _checkItem(),
                     ),
-                    _buildText(widget.task.isDone, widget.task.description),
+                    ItemText(
+                      widget.task.isDone,
+                      widget.task.description,
+                      widget.task.dueDate.toString(),
+                      widget.task.dueTime.toString(),
+                    ),
                   ],
                 ),
                 IconButton(

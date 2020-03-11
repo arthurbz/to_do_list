@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import '../providers/task.dart';
 
 //Show a dialog that allows the user to create or edit a task.
+//### MISSING FEATURES ###
+// Proper Form Focus and keyboard actions.
+// BottomModalSheet size is too big and doesn't work proper with keyboard.
+// Keyboard must push the sheet up so the "ADD TASK" button is visible.
 
 class AddNewTask extends StatefulWidget {
   static void addNewTaskSheet(BuildContext context) {
@@ -19,28 +23,40 @@ class AddNewTask extends StatefulWidget {
 }
 
 class _AddNewTaskState extends State<AddNewTask> {
-  Future<TimeOfDay> _selectedTime;
-  Future<DateTime> _selectedDate;
+  TimeOfDay _selectedTime;
+  DateTime _selectedDate;
   final _formKey = GlobalKey<FormState>();
-  Task _newTask = Task(
-    id: DateTime.now().toString(),
-    description: '',
-  );
+  String _inputDescription;
 
-  // void _pickUserDueTime() {
-  //   setState(() {
-  //     _selectedDate = showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime.now(),
-  //       lastDate: DateTime(2030),//Is it ok to leave it like this?
-  //     );
-  //     _selectedTime = showTimePicker(
-  //       initialTime: TimeOfDay.now(),
-  //       context: context,
-  //     );
-  //   });
-  // }
+  //This method looks dirty but I haven't found another approach
+  //Basically it shows the DatePicker, then, if the user selected a date it'll show the TimePicker.
+  //Otherwise it won't show the TimePicker.
+  void _pickUserDueDate() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2030))
+        .then((date) {
+      if (date == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = date; //Use intl package to format!
+      });
+      showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      ).then((time) {
+        if (time == null) {
+          return;
+        }
+        setState(() {
+          _selectedTime = time;
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,24 +79,24 @@ class _AddNewTaskState extends State<AddNewTask> {
                 return null;
               },
               onSaved: (value) {
-                _newTask.description = value;
+                _inputDescription = value;
               },
             ),
             SizedBox(
               height: 20,
             ),
-            // Text('Due time', style: Theme.of(context).textTheme.title),
-            // TextField(
-            //   onTap: () {
-            //     //_pickUserDueTime();
-            //   },
-            //   decoration: InputDecoration(
-            //     hintText: _selectedTime == null
-            //         ? 'Provide your due time'
-            //         : _selectedTime
-            //             .toString(), //Fix this so I can assign it to the object dueTime :P
-            //   ), //Update as user pick the time
-            // ),
+            Text('Due time', style: Theme.of(context).textTheme.title),
+            TextField(
+              onTap: () {
+                _pickUserDueDate();
+              },
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: _selectedDate == null
+                    ? 'Provide your due time'
+                    : 'Working on it :P',
+              ), //Update as user pick the time
+            ),
             Container(
               alignment: Alignment.bottomRight,
               child: FlatButton(
@@ -96,7 +112,13 @@ class _AddNewTaskState extends State<AddNewTask> {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
                     Provider.of<TaskProvider>(context, listen: false)
-                        .createNewTask(_newTask);
+                        .createNewTask(Task(
+                      id: DateTime.now().toString(),
+                      description: _inputDescription,
+                      dueDate: _selectedDate,
+                      dueTime: _selectedTime,
+                    ));
+                    Navigator.of(context).pop();
                   }
                 },
               ),
