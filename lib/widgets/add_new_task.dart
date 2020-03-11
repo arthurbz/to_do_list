@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/task.dart';
 
@@ -28,9 +29,6 @@ class _AddNewTaskState extends State<AddNewTask> {
   final _formKey = GlobalKey<FormState>();
   String _inputDescription;
 
-  //This method looks dirty but I haven't found another approach
-  //Basically it shows the DatePicker, then, if the user selected a date it'll show the TimePicker.
-  //Otherwise it won't show the TimePicker.
   void _pickUserDueDate() {
     showDatePicker(
             context: context,
@@ -41,21 +39,47 @@ class _AddNewTaskState extends State<AddNewTask> {
       if (date == null) {
         return;
       }
+      date = date;
       setState(() {
-        _selectedDate = date; //Use intl package to format!
-      });
-      showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      ).then((time) {
-        if (time == null) {
-          return;
-        }
-        setState(() {
-          _selectedTime = time;
-        });
+        _selectedDate = date;
       });
     });
+  }
+
+  void _pickUserDueTime() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((time) {
+      if (time == null) {
+        return;
+      }
+      setState(() {
+        _selectedTime = time;
+      });
+    });
+  }
+
+  Widget _showTimePicker() {
+    if (_selectedDate != null) {
+      return Stack(//Looking bad AF, but I have to figure it out why a Row doesn't work
+        children: <Widget>[
+          Text('Due time', style: Theme.of(context).textTheme.title),
+          TextField(
+            onTap: () {
+              _pickUserDueTime();
+            },
+            readOnly: true,
+            decoration: InputDecoration(
+              hintText: _selectedTime == null
+                  ? 'Provide your due time'
+                  : _selectedTime.toString(),
+            ),
+          ),
+        ],
+      );
+    }
+    return Container(); //Highly doubt this is the best approach, but I haven't searched for anything yet.
   }
 
   @override
@@ -85,7 +109,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             SizedBox(
               height: 20,
             ),
-            Text('Due time', style: Theme.of(context).textTheme.title),
+            Text('Due date', style: Theme.of(context).textTheme.title),
             TextField(
               onTap: () {
                 _pickUserDueDate();
@@ -93,10 +117,11 @@ class _AddNewTaskState extends State<AddNewTask> {
               readOnly: true,
               decoration: InputDecoration(
                 hintText: _selectedDate == null
-                    ? 'Provide your due time'
-                    : 'Working on it :P',
-              ), //Update as user pick the time
+                    ? 'Provide your due date'
+                    : DateFormat.yMMMd().format(_selectedDate),
+              ),
             ),
+            _showTimePicker(),
             Container(
               alignment: Alignment.bottomRight,
               child: FlatButton(

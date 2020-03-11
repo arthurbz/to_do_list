@@ -8,8 +8,8 @@ class ItemText extends StatelessWidget {
 
   //Just shows the text inside a ListItem.
   //### MISSING FEATURES ###
-  //Treat text overflow.
-  //Show due date and due time if they exist.
+  // Treat text overflow.
+  // Show due date and due time if they exist.
 
   ItemText(
     this.check,
