@@ -28,7 +28,7 @@ class _AddNewTaskState extends State<AddNewTask> {
   DateTime _selectedDate;
   final _formKey = GlobalKey<FormState>();
   String _inputDescription;
-
+  
   void _pickUserDueDate() {
     showDatePicker(
             context: context,
@@ -60,28 +60,6 @@ class _AddNewTaskState extends State<AddNewTask> {
     });
   }
 
-  Widget _showTimePicker() {
-    if (_selectedDate != null) {
-      return Stack(//Looking bad AF, but I have to figure it out why a Row doesn't work
-        children: <Widget>[
-          Text('Due time', style: Theme.of(context).textTheme.title),
-          TextField(
-            onTap: () {
-              _pickUserDueTime();
-            },
-            readOnly: true,
-            decoration: InputDecoration(
-              hintText: _selectedTime == null
-                  ? 'Provide your due time'
-                  : _selectedTime.toString(),
-            ),
-          ),
-        ],
-      );
-    }
-    return Container(); //Highly doubt this is the best approach, but I haven't searched for anything yet.
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -110,7 +88,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               height: 20,
             ),
             Text('Due date', style: Theme.of(context).textTheme.title),
-            TextField(
+            TextFormField(
               onTap: () {
                 _pickUserDueDate();
               },
@@ -121,7 +99,21 @@ class _AddNewTaskState extends State<AddNewTask> {
                     : DateFormat.yMMMd().format(_selectedDate),
               ),
             ),
-            _showTimePicker(),
+            SizedBox(
+              height: 20,
+            ),
+            Text('Due time', style: Theme.of(context).textTheme.title),
+            TextFormField(
+              onTap: () {
+                _pickUserDueTime();
+              },
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: _selectedTime == null
+                    ? 'Provide your due time'
+                    : _selectedTime.format(context),
+              ),
+            ),
             Container(
               alignment: Alignment.bottomRight,
               child: FlatButton(
@@ -136,6 +128,9 @@ class _AddNewTaskState extends State<AddNewTask> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
+                    if(_selectedDate == null && _selectedTime != null) {
+                      _selectedDate = DateTime.now();
+                    }
                     Provider.of<TaskProvider>(context, listen: false)
                         .createNewTask(Task(
                       id: DateTime.now().toString(),

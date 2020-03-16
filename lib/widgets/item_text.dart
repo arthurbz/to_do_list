@@ -34,7 +34,7 @@ class ItemText extends StatelessWidget {
                 color: Colors.grey,
                 decoration: TextDecoration.lineThrough),
           ),
-          _buildTexts(context),
+          _buildDateTimeTexts(context),
         ],
       );
     }
@@ -49,7 +49,7 @@ class ItemText extends StatelessWidget {
             fontSize: 22,
           ),
         ),
-        _buildTexts(context),
+        _buildDateTimeTexts(context),
       ],
     );
   }
@@ -76,7 +76,7 @@ class ItemText extends StatelessWidget {
     );
   }
 
-  Widget _buildTexts(BuildContext context) {
+  Widget _buildDateTimeTexts(BuildContext context) {
     if (dueDate != null && dueTime == null) {
       return _buildDateText(context);
     } else if (dueDate != null && dueTime != null) {
@@ -91,7 +91,8 @@ class ItemText extends StatelessWidget {
         ],
       );
     }
-    return null;
+    return Container();
+    //What would be a better approach?
   }
 
   @override
