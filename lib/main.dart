@@ -14,7 +14,7 @@ class ToDoListApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.purple,
-          accentColor: Colors.deepOrange,
+          accentColor: Colors.yellow[700],
           fontFamily: 'Lato',
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(

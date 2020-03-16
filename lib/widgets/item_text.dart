@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+//Just shows the text inside a ListItem.
+// Show due date and due time if they exist.
+//### MISSING FEATURES ###
+//Code needs to be refactored.
+// Treat text overflow.
 
 class ItemText extends StatelessWidget {
   final bool check;
   final String text;
-  final String dueDate;
-  final String dueTime;
-
-  //Just shows the text inside a ListItem.
-  //### MISSING FEATURES ###
-  // Treat text overflow.
-  // Show due date and due time if they exist.
+  final DateTime dueDate;
+  final TimeOfDay dueTime;
 
   ItemText(
     this.check,
@@ -18,30 +20,83 @@ class ItemText extends StatelessWidget {
     this.dueTime,
   );
 
-  Widget _buildText() {
+  Widget _buildText(BuildContext context) {
     if (check) {
-      return Text(
-        text,
-        overflow: TextOverflow.fade,
-        style: TextStyle(
-            fontSize: 22,
-            color: Colors.grey,
-            decoration: TextDecoration.lineThrough),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 22,
+                color: Colors.grey,
+                decoration: TextDecoration.lineThrough),
+          ),
+          _buildTexts(context),
+        ],
       );
     }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 22,
+          ),
+        ),
+        _buildTexts(context),
+      ],
+    );
+  }
+
+  Widget _buildDateText(BuildContext context) {
     return Text(
-      text,
-      overflow: TextOverflow.fade,
+      DateFormat.yMMMd().format(dueDate).toString(),
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 22,
+        fontSize: 14,
+        color: check ? Colors.grey : Theme.of(context).primaryColorDark,
       ),
     );
   }
 
-  Widget _buildDateText() {}
+  Widget _buildTimeText(BuildContext context) {
+    return Text(
+      dueTime.format(context),
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        fontSize: 14,
+        color: check ? Colors.grey : Theme.of(context).primaryColorDark,
+      ),
+    );
+  }
+
+  Widget _buildTexts(BuildContext context) {
+    if (dueDate != null && dueTime == null) {
+      return _buildDateText(context);
+    } else if (dueDate != null && dueTime != null) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildDateText(context),
+          SizedBox(
+            width: 10,
+          ),
+          _buildTimeText(context),
+        ],
+      );
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildText(); //Search if it's ok to return something like this :P
+    return _buildText(context);
+    //Search if it's ok to return something like this :P
   }
 }

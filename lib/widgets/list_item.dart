@@ -78,8 +78,8 @@ class _ListItemState extends State<ListItem> {
                     ItemText(
                       widget.task.isDone,
                       widget.task.description,
-                      widget.task.dueDate.toString(),
-                      widget.task.dueTime.toString(),
+                      widget.task.dueDate,
+                      widget.task.dueTime,
                     ),
                   ],
                 ),
