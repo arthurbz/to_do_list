@@ -30,21 +30,37 @@ class TaskProvider with ChangeNotifier {
       id: 'task#1',
       description: 'Create my models',
       dueDate: DateTime.now(),
+      dueTime: TimeOfDay.now(),
     ),
     Task(
       id: 'task#2',
       description: 'Add provider',
       dueDate: DateTime.now(),
+      dueTime: TimeOfDay.now(),
     ),
   ];
 
+  Task getById(String id) {
+    return _toDoList.firstWhere((task) => task.id == id);
+  }
+
   void createNewTask(Task task) {
-    _toDoList.add(task);
+    final newTask = Task(
+      id: task.id,
+      description: task.description,
+      dueDate: task.dueDate,
+      dueTime: task.dueTime,
+    );
+    _toDoList.add(newTask);
     notifyListeners();
   }
 
   void editTask(Task task) {
-    _toDoList.add(task);
+    final index = _toDoList.indexWhere((t) => t.id == task.id);
+    print(index);
+    if (index >= 0) {
+      _toDoList[index] = task;
+    }
     notifyListeners();
   }
 

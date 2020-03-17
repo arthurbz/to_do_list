@@ -4,31 +4,28 @@ import 'package:intl/intl.dart';
 
 import '../providers/task.dart';
 
-//Show a dialog that allows the user to create or edit a task.
+//Show a bottom sheet that allows the user to create or edit a task.
 //### MISSING FEATURES ###
 // Proper Form Focus and keyboard actions.
 // BottomModalSheet size is too big and doesn't work proper with keyboard.
 // Keyboard must push the sheet up so the "ADD TASK" button is visible.
 
 class AddNewTask extends StatefulWidget {
-  static void addNewTaskSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return AddNewTask();
-        });
-  }
+  final String id;
+
+  AddNewTask({this.id});
 
   @override
   _AddNewTaskState createState() => _AddNewTaskState();
 }
 
 class _AddNewTaskState extends State<AddNewTask> {
+  Task task;
   TimeOfDay _selectedTime;
   DateTime _selectedDate;
-  final _formKey = GlobalKey<FormState>();
   String _inputDescription;
-  
+  final _formKey = GlobalKey<FormState>();
+
   void _pickUserDueDate() {
     showDatePicker(
             context: context,
@@ -60,6 +57,33 @@ class _AddNewTaskState extends State<AddNewTask> {
     });
   }
 
+  void _validateForm() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      if (_selectedDate == null && _selectedTime != null) {
+        _selectedDate = DateTime.now();
+      }
+      Provider.of<TaskProvider>(context, listen: false).createNewTask(
+        Task(
+          id: DateTime.now().toString(),
+          description: _inputDescription,
+          dueDate: _selectedDate,
+          dueTime: _selectedTime,
+        ),
+      );
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  void initState() {
+    // task = Provider.of<TaskProvider>(context, listen: false).getById(widget.id);
+    // _selectedDate = task.dueDate;
+    // _selectedTime = task.dueTime;
+    // _inputDescription = task.description;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,6 +95,8 @@ class _AddNewTaskState extends State<AddNewTask> {
           children: <Widget>[
             Text('Title', style: Theme.of(context).textTheme.title),
             TextFormField(
+              initialValue:
+                  _inputDescription == null ? null : _inputDescription,
               decoration: InputDecoration(
                 hintText: 'Describe your task',
               ),
@@ -96,7 +122,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               decoration: InputDecoration(
                 hintText: _selectedDate == null
                     ? 'Provide your due date'
-                    : DateFormat.yMMMd().format(_selectedDate),
+                    : DateFormat.yMMMd().format(_selectedDate).toString(),
               ),
             ),
             SizedBox(
@@ -126,20 +152,7 @@ class _AddNewTaskState extends State<AddNewTask> {
                       fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    if(_selectedDate == null && _selectedTime != null) {
-                      _selectedDate = DateTime.now();
-                    }
-                    Provider.of<TaskProvider>(context, listen: false)
-                        .createNewTask(Task(
-                      id: DateTime.now().toString(),
-                      description: _inputDescription,
-                      dueDate: _selectedDate,
-                      dueTime: _selectedTime,
-                    ));
-                    Navigator.of(context).pop();
-                  }
+                  _validateForm();
                 },
               ),
             ),

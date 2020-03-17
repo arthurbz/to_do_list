@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/task.dart';
+import '../widgets/add_new_task.dart';
 import './item_text.dart';
 
 //A widget that composes every single item in the list.
@@ -83,10 +84,16 @@ class _ListItemState extends State<ListItem> {
                     ),
                   ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: null,
-                ),
+                if (!widget.task.isDone)
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (_) => AddNewTask(id: widget.task.id),
+                      );
+                    },
+                  ),
               ],
             ),
           ),

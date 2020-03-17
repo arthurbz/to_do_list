@@ -16,7 +16,10 @@ class Homepage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              return AddNewTask.addNewTaskSheet(context);
+              showModalBottomSheet(
+                context: context,
+                builder: (_) => AddNewTask(),
+              );
             },
           ),
         ],
@@ -25,7 +28,10 @@ class Homepage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          return AddNewTask.addNewTaskSheet(context);
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => AddNewTask(),
+          );
         },
         tooltip: 'Add a new item!',
       ),
