@@ -4,7 +4,7 @@
  
   I've always used to-do lists, and since I didn't knew what to do as my first Dart/Flutter independent project, I've chosen to create my own to-do list app, so, here it is. It's very simple but it helped me to understand and put into practice a lot of things I've only learned thorugh theory or coding along with coruses.
  
- ***Features***]
+ ***Features***
  
   - Users can create their own tasks by clicking on the '+' buttons.
   - You can mark a task as done by cliking on it (check it).
