@@ -12,12 +12,19 @@ class ToDoListApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => TaskProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.yellow[700],
           fontFamily: 'Lato',
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                ),
+                subtitle: TextStyle(
                   color: Colors.purple,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.bold,

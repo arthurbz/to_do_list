@@ -33,7 +33,7 @@ class _AddNewTaskState extends State<AddNewTask> {
   void _pickUserDueDate() {
     showDatePicker(
             context: context,
-            initialDate: DateTime.now(),
+            initialDate: widget.isEditMode ? _selectedDate : DateTime.now(),
             firstDate: DateTime(2020),
             lastDate: DateTime(2030))
         .then((date) {
@@ -50,7 +50,7 @@ class _AddNewTaskState extends State<AddNewTask> {
   void _pickUserDueTime() {
     showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: widget.isEditMode ? _selectedTime : TimeOfDay.now(),
     ).then((time) {
       if (time == null) {
         return;
@@ -111,7 +111,7 @@ class _AddNewTaskState extends State<AddNewTask> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Title', style: Theme.of(context).textTheme.title),
+            Text('Title', style: Theme.of(context).textTheme.subtitle),
             TextFormField(
               initialValue:
                   _inputDescription == null ? null : _inputDescription,
@@ -131,7 +131,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             SizedBox(
               height: 20,
             ),
-            Text('Due date', style: Theme.of(context).textTheme.title),
+            Text('Due date', style: Theme.of(context).textTheme.subtitle),
             TextFormField(
               onTap: () {
                 _pickUserDueDate();
@@ -146,7 +146,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             SizedBox(
               height: 20,
             ),
-            Text('Due time', style: Theme.of(context).textTheme.title),
+            Text('Due time', style: Theme.of(context).textTheme.subtitle),
             TextFormField(
               onTap: () {
                 _pickUserDueTime();
@@ -162,7 +162,7 @@ class _AddNewTaskState extends State<AddNewTask> {
               alignment: Alignment.bottomRight,
               child: FlatButton(
                 child: Text(
-                  'ADD TASK',
+                  !widget.isEditMode ? 'ADD TASK' : 'EDIT TASK',
                   style: TextStyle(
                       color: Theme.of(context).accentColor,
                       fontFamily: 'Lato',
