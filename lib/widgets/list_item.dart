@@ -90,7 +90,10 @@ class _ListItemState extends State<ListItem> {
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
-                        builder: (_) => AddNewTask(id: widget.task.id),
+                        builder: (_) => AddNewTask(
+                          id: widget.task.id,
+                          isEditMode: true,
+                        ),
                       );
                     },
                   ),

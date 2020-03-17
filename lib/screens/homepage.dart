@@ -18,7 +18,7 @@ class Homepage extends StatelessWidget {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
-                builder: (_) => AddNewTask(),
+                builder: (_) => AddNewTask(isEditMode: false),
               );
             },
           ),
@@ -30,7 +30,7 @@ class Homepage extends StatelessWidget {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (_) => AddNewTask(),
+            builder: (_) => AddNewTask(isEditMode: false),
           );
         },
         tooltip: 'Add a new item!',

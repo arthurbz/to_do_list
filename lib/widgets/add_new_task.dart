@@ -12,8 +12,12 @@ import '../providers/task.dart';
 
 class AddNewTask extends StatefulWidget {
   final String id;
+  final bool isEditMode;
 
-  AddNewTask({this.id});
+  AddNewTask({
+    this.id,
+    this.isEditMode,
+  });
 
   @override
   _AddNewTaskState createState() => _AddNewTaskState();
@@ -63,24 +67,38 @@ class _AddNewTaskState extends State<AddNewTask> {
       if (_selectedDate == null && _selectedTime != null) {
         _selectedDate = DateTime.now();
       }
-      Provider.of<TaskProvider>(context, listen: false).createNewTask(
-        Task(
-          id: DateTime.now().toString(),
-          description: _inputDescription,
-          dueDate: _selectedDate,
-          dueTime: _selectedTime,
-        ),
-      );
+      if (!widget.isEditMode) {
+        Provider.of<TaskProvider>(context, listen: false).createNewTask(
+          Task(
+            id: DateTime.now().toString(),
+            description: _inputDescription,
+            dueDate: _selectedDate,
+            dueTime: _selectedTime,
+          ),
+        );
+      } else {
+        Provider.of<TaskProvider>(context, listen: false).editTask(
+          Task(
+            id: task.id,
+            description: _inputDescription,
+            dueDate: _selectedDate,
+            dueTime: _selectedTime,
+          ),
+        );
+      }
       Navigator.of(context).pop();
     }
   }
 
   @override
   void initState() {
-    // task = Provider.of<TaskProvider>(context, listen: false).getById(widget.id);
-    // _selectedDate = task.dueDate;
-    // _selectedTime = task.dueTime;
-    // _inputDescription = task.description;
+    if (widget.isEditMode) {
+      task =
+          Provider.of<TaskProvider>(context, listen: false).getById(widget.id);
+      _selectedDate = task.dueDate;
+      _selectedTime = task.dueTime;
+      _inputDescription = task.description;
+    }
     super.initState();
   }
 

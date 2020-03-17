@@ -56,12 +56,8 @@ class TaskProvider with ChangeNotifier {
   }
 
   void editTask(Task task) {
-    final index = _toDoList.indexWhere((t) => t.id == task.id);
-    print(index);
-    if (index >= 0) {
-      _toDoList[index] = task;
-    }
-    notifyListeners();
+    removeTask(task.id);
+    createNewTask(task);
   }
 
   void removeTask(String id) {
