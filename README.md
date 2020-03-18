@@ -23,28 +23,16 @@ own to-do list app, so, here it is. It's very simple, but it helped me to unders
  
  <b>Homepage</b>
  <br>
- <table border="0">
- <td>
-  <img src="screenshots/no_tasks_yet.png" width="360" height="640">
- </td>
- <td>
-  <img src="screenshots/homepage.png" width="360" height="640">
- </td>
- </table>
+  <img src="screenshots/no_tasks_yet.png" width="360" height="640"/>
+  <img src="screenshots/homepage.png" width="360" height="640"/>
  <br>
  <br>
  <b>Add New Task</b>
  <br>
- <img src="screenshots/add_new_task.png" width="360" height="640">
+ <img src="screenshots/add_new_task.png" width="360" height="640"/>
  <br>
  <br>
  <b>Pick Date and Time</b>
  <br>
- <table border="0">
- <td>
-  <img src="screenshots/pick_date.png" width="360" height="640">
- </td>
- <td>
-  <img src="screenshots/pick_time.png" width="360" height="640">
- </td>
- </table>
+  <img src="screenshots/pick_date.png" width="360" height="640"/>
+  <img src="screenshots/pick_time.png" width="360" height="640"/>
