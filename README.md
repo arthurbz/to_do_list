@@ -14,7 +14,8 @@ own to-do list app, so, here it is. It's very simple, but it helped me to unders
   - You can delete a task by sliding it from right to left.
  
   <h1>Possible features</h1>
- 
+  
+  - Use SQLite to store tasks.
   - User could add more than one list.
   - User could receive a push-up when a task is expired.
   - Users could change the color scheme of the app.
